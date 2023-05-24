@@ -72,7 +72,7 @@
     
     }
     if (!validateMobile(mobile)) {
-      alert('Invalid Mobile format.numnbers must be 10');
+      alert('Invalid Mobile format.');
       return false;
     }
     return true;
