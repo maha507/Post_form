@@ -110,22 +110,22 @@
   <form on:submit={handleSubmit}>
     <div class="mb-3">
       <label for="fullName" class="form-label">Full Name:</label>
-      <input type="text" class="form-control" id="fullName" bind:value={fullName} placeholder="Full Name" required>
+      <input type="text" class="form-control" id="fullName" bind:value={fullName} placeholder=" Enter Full Name" required>
     </div>
     <div class="mb-3">
       <label for="email" class="form-label">Email:</label>
-      <input type="email" class="form-control" id="email" bind:value={email} placeholder="Email" required>
+      <input type="email" class="form-control" id="email" bind:value={email} placeholder=" Enter Email" required>
     </div>
     <div class="mb-3">
       <label for="mobile" class="form-label">Mobile:</label>
       <div class="input-group">
         <span class="input-group-text">+</span>
-        <input type="tel" class="form-control" id="mobile" bind:value={mobile} placeholder="Mobile" required maxlength="10" pattern="^\+?\d+$">
+        <input type="tel" class="form-control" id="mobile" bind:value={mobile} placeholder="Enter Mobile" required maxlength="10" pattern="^\+?\d+$">
       </div>
     </div>
     <div class="mb-3">
       <label for="cv" class="form-label">CV:</label>
-      <input type="file" class="form-control" id="cv" accept=".pdf,.doc,.docx" on:change={handleFileChange} placeholder="CV" required>
+      <input type="file" class="form-control" id="cv" accept=".pdf,.doc,.docx" on:change={handleFileChange} placeholder=" select CV" required>
     </div>
     <button class="btn btn-primary" type="submit" disabled={!fullName || !email || !mobile || !fileName || !fileContent}>Submit</button>
   </form>
