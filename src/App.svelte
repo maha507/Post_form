@@ -63,7 +63,7 @@
   function validateForm() {
     // Validate the form fields
     if (fullName.length === 0 || fullName.length > 28) {
-      alert('First Name is required and should be less than or equal to 28 characters.');
+      alert('FullName is required and should be less than or equal to 28 characters.');
       return false;
     }
     if (!validateEmail(email)) {
@@ -72,7 +72,7 @@
     
     }
     if (!validateMobile(mobile)) {
-      alert('Invalid Mobile format.');
+      alert('Invalid Mobile format.numnbers must be 10');
       return false;
     }
     return true;
