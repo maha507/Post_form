@@ -1,64 +1,115 @@
 <script>
-	import 'bootstrap/dist/css/bootstrap.min.css';
+
+  import 'bootstrap/dist/css/bootstrap.min.css';
+  let fullName = '';
+  let email = '';
+  let mobile = '';
   let cvFile = null;
-  let fullname = "";
-  let email = "";
-  let mobile = "";
   let fileContent = '';
   let fileName = '';
-
-  function handleFileChange(event) {
-    cvFile = event.target.files[0];
-    if (cvFile) {
-      fileName = cvFile.name;
-    }
+  
+  async function handleFileChange(event) {
+  cvFile = event.target.files[0];
+  fileContent = await toBase64(cvFile);
+  fileName = cvFile.name;
   }
-
   async function uploadCV() {
-    if (cvFile) {
-      const base64Data = await toBase64(cvFile);
-      const postData = {
-        cv: base64Data,
-        fullname: fullname,
-        email: email,
-        mobile: mobile,
-        fileContent: fileContent,
-        fileName: fileName
-      };
-
-      console.log("Entered details:", postData); // Display details in the console
-
-      const response = await fetch('https://api.recruitly.io/api/cvsubmit/bytes?apiKey=TEST45684CB2A93F41FC40869DC739BD4D126D77', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(postData)
-      });
-
-      // Handle the response as needed
+  if (cvFile && fileContent && fileName) {
+   const postData = {
+  fullName,
+  email,
+  mobile,
+  fileContent,
+  fileName
+   };
+  try {
+  const response = await fetch('https://api.recruitly.io/api/cvsubmit/bytes?apiKey=TEST45684CB2A93F41FC40869DC739BD4D126D77', {
+   method: 'POST',
+  headers: {
+  'Content-Type': 'application/json'
+   },
+   body: JSON.stringify(postData)
+   });
+   // Handle the response as needed
+  if (response.ok) {
+  console.log('CV uploaded successfully');
+  
+  } else {
+     console.error('Failed to upload CV');
+   }
+     } 
+     catch (error) {
+  console.error('Error uploading CV:', error);
+   }
+   }
+  }
+   function toBase64(file) {
+     return new Promise((resolve, reject) => {
+     const reader = new FileReader();
+    reader.readAsDataURL(file);  
+ reader.onload = () => resolve(reader.result.split(',')[1]);
+  reader.onerror = error => reject(error);
+ });
+  }
+  function handleSubmit(event) {
+    event.preventDefault();
+    // Validate the form fields and submit data if valid
+    if (validateForm()) {
+      // TODO: Handle form submission
+      console.log('Form submitted successfully!');
     }
   }
 
-  function toBase64(file) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        fileContent = reader.result.split(',')[1];
-        resolve(fileContent);
-      };
-      reader.onerror = error => reject(error);
-    });
+  function validateForm() {
+    // Validate the form fields
+    if (fullName.length === 0 || fullName.length > 28) {
+      alert('First Name is required and should be less than or equal to 28 characters.');
+      return false;
+    }
+    if (!validateEmail(email)) {
+      alert('Invalid Email format.');
+      return false;
+    
+    }
+    if (!validateMobile(mobile)) {
+      alert('Invalid Mobile format.');
+      return false;
+    }
+    return true;
   }
-</script>
 
-<main>
-  <h1>Upload CV</h1>
-  <input type="text" placeholder="Full Name" bind:value="{fullname}" />
-  <input type="email" placeholder="Email" bind:value="{email}" />
-  <input type="tel" placeholder="Mobile" bind:value="{mobile}" />
-  <input type="file" accept=".pdf,.doc,.docx" on:change={handleFileChange} />
-
-  <button on:click={uploadCV}>Submit</button>
-</main>
+  function validateEmail(email) {
+    // Validate the email format using a regular expression
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+  function validateMobile(mobile) {
+    // Validate the mobile format using a regular expression
+    const mobileRegex = /^(\+?\d+)?$/;
+    return mobileRegex.test(mobile);
+  }
+   </script>
+  <main class="container">
+    <form on:submit={handleSubmit}>
+   <div class="mb-3">
+    <label for="fullName" class="form-label">First Name:</label>
+    <input type="text" class="form-control" id="firstName" bind:value={fullName} required>
+  </div>
+   <div class="mb-3">
+    <label for="email" class="form-label">Email:</label>
+    <input type="email" class="form-control" id="email" bind:value={email} required>
+  </div>
+  <div class="mb-3">
+    <label for="mobile" class="form-label">Mobile:</label>
+    <div class="input-group">
+      <span class="input-group-text">+</span>
+      <input type="tel" class="form-control" id="mobile" bind:value={mobile} required pattern="^\+?\d+$">
+    </div>
+    <div class="mb-3">
+      <label for="cv" class="form-label">CV:</label>
+  <input type="file" class="form-control" accept=".pdf,.doc,.docx" on:change={handleFileChange} />
+  <h1></h1>
+   <button class="btn btn-primary" on:click={uploadCV} disabled={!fullName  || !email || !mobile || !fileName || !fileContent}>Submit</button>
+  </div>
+</form>
+  </main>
