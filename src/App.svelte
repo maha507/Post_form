@@ -103,7 +103,7 @@
     <label for="mobile" class="form-label">Mobile:</label>
     <div class="input-group">
       <span class="input-group-text">+</span>
-      <input type="tel" class="form-control" id="mobile" bind:value={mobile} required pattern="^\+?\d+$">
+      <input type="tel" class="form-control" id="mobile" bind:value={mobile} required maxlength="10" pattern="^\+?\d+$">
     </div>
     <div class="mb-3">
       <label for="cv" class="form-label">CV:</label>
