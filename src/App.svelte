@@ -37,7 +37,7 @@
         if (response.ok) {
           console.log('CV uploaded successfully');
           resetForm();
-
+          location.reload();
         } else {
           console.error('Failed to upload CV');
         }
