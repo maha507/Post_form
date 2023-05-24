@@ -103,7 +103,7 @@
     fileName = '';
     document.getElementById('cv').value = '';
   }
-  location.reload();
+  
 </script>
 
 <main class="container">
